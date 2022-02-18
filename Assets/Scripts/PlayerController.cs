@@ -9,8 +9,6 @@ public class PlayerController : MonoBehaviour
     Vector2 moveInput;
     Rigidbody2D myRigidbody = null;
 
-    bool isJumping = false;
-
     void Awake()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
@@ -28,19 +26,18 @@ public class PlayerController : MonoBehaviour
 
     void OnJump(InputValue value)
     {
-        Debug.Log("Hello");
-        if (!isJumping)
+        if (!GetComponent<BoxCollider2D>().IsTouchingLayers(LayerMask.GetMask("Platform")))
         {
-            myRigidbody.AddForce(Vector2.up * jumpVelocity);
-            isJumping = true;
-            return;
+            return; 
         }
-        isJumping = false;
+        if (value.isPressed)
+        {
+            myRigidbody.velocity += new Vector2(0f, jumpVelocity);
+        }
     }
 
     private void Run()
     {
-        Vector2 playerVelocity = new Vector2 (moveInput.x * velocity, 0);
-        myRigidbody.velocity = playerVelocity;
+        myRigidbody.velocity = new Vector2(moveInput.x * velocity, myRigidbody.velocity.y);
     }
 }
