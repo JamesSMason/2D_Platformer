@@ -8,10 +8,12 @@ public class PlayerController : MonoBehaviour
 
     Vector2 moveInput;
     Rigidbody2D myRigidbody = null;
+    BoxCollider2D myBoxCollider = null;
 
     void Awake()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
+        myBoxCollider = GetComponent<BoxCollider2D>();
     }
 
     void Update()
@@ -26,10 +28,8 @@ public class PlayerController : MonoBehaviour
 
     void OnJump(InputValue value)
     {
-        if (!GetComponent<BoxCollider2D>().IsTouchingLayers(LayerMask.GetMask("Platform")))
-        {
-            return; 
-        }
+        if (!GetComponent<BoxCollider2D>().IsTouchingLayers(LayerMask.GetMask("Platform"))) { return; }
+
         if (value.isPressed)
         {
             myRigidbody.velocity += new Vector2(0f, jumpVelocity);
@@ -38,6 +38,10 @@ public class PlayerController : MonoBehaviour
 
     private void Run()
     {
+        bool touchingPlatform = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Platform"));
+        bool touchingWall = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Wall"));
+        if (!touchingPlatform && !touchingWall) { return; }
+
         myRigidbody.velocity = new Vector2(moveInput.x * velocity, myRigidbody.velocity.y);
     }
 }
