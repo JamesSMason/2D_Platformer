@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyMover : MonoBehaviour
@@ -32,9 +30,7 @@ public class EnemyMover : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Colliding");
         if (!myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Wall"))) { return; }
-        Debug.Log("Success");
 
         Vector3 enemyScale = transform.localScale;
         enemyScale.x *= -1;

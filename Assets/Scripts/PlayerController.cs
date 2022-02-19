@@ -28,7 +28,9 @@ public class PlayerController : MonoBehaviour
 
     void OnJump(InputValue value)
     {
-        if (!GetComponent<BoxCollider2D>().IsTouchingLayers(LayerMask.GetMask("Platform"))) { return; }
+        bool touchingPlatform = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Platform"));
+        bool touchingWall = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Wall"));
+        if (!touchingPlatform && !touchingWall) { return; }
 
         if (value.isPressed)
         {
