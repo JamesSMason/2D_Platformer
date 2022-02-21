@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class Collectibles : MonoBehaviour
 {
-    ExitActivator exitActivator = null;
-
     public Action OnItemCollected;
 
     void OnTriggerEnter2D(Collider2D collision)
