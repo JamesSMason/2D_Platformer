@@ -9,8 +9,8 @@ public class DestructibleTiles : MonoBehaviour
     bool isPlayerTouching = false;
     Tilemap tilemap = null;
 
-    Dictionary<TileBase, Vector3Int> currentTiles = new Dictionary<TileBase, Vector3Int>();
-    Dictionary<int, TileTimer> tileLookup = new Dictionary<int, TileTimer>();
+    Dictionary<Vector3Int, TileTracker> currentTiles = new Dictionary<Vector3Int, TileTracker>();
+    Dictionary<Vector3Int, TileTracker> tileLookup = new Dictionary<Vector3Int, TileTracker>();
     List<TileBase> tilesToRemove = new List<TileBase>();
 
     void Awake()
@@ -23,48 +23,36 @@ public class DestructibleTiles : MonoBehaviour
         if (currentTiles.Count == 0) { return; }
         if (isPlayerTouching)
         {
-            foreach (TileBase tile in currentTiles.Keys)
+            foreach (Vector3Int pos in currentTiles.Keys)
             {
-                int tileID = tile.GetInstanceID();
-
-                if (!tileLookup.ContainsKey(tileID))
+                if (!tileLookup.ContainsKey(pos))
                 {
-                    TileTimer tileTimer = new TileTimer();
-                    tileLookup[tileID] = tileTimer;
+                    tileLookup[pos] = new TileTracker();
                 }
 
-                TileTimer timer = tileLookup[tileID];
+                TileTracker tracker = tileLookup[pos];
 
-                timer.SetElapsedTime(timer.GetElapsedTime() + Time.deltaTime);
+                float newTime = tracker.GetElapsedTime() + Time.deltaTime;
 
-                if (timer.GetElapsedTime() > timeToUpdate)
+                if (newTime > timeToUpdate)
                 {
-                    int currentIndex = timer.GetIndex();
+                    int currentIndex = tracker.GetIndex() + 1;
                     if (currentIndex < floorSprites.Length)
                     {
                         TileBase newTile = floorSprites[currentIndex];
-                        tilemap.SetTile(currentTiles[tile], newTile);
-                        TileTimer newTimer = new TileTimer();
-                        newTimer.SetIndex(currentIndex + 1);
-                        tileLookup[newTile.GetInstanceID()] = newTimer;
-
-                        tilesToRemove.Add(tile);
+                        tilemap.SetTile(pos, newTile);
+                        tracker.SetIndex(currentIndex);
+                        tracker.SetElapsedTime(0);
                     }
                     else
                     {
-                        tilemap.SetTile(currentTiles[tile], null);
-                        tilesToRemove.Add(tile);
+                        tilemap.SetTile(pos, null);
                     }
                 }
-            }
-
-            if (tilesToRemove.Count > 0)
-            {
-                foreach (TileBase oldTile in tilesToRemove)
+                else
                 {
-                    tileLookup.Remove(oldTile.GetInstanceID());
+                    tracker.SetElapsedTime(newTime);
                 }
-                tilesToRemove = new List<TileBase>();
             }
         }
     }
@@ -109,13 +97,13 @@ public class DestructibleTiles : MonoBehaviour
             TileBase newTile = tilemap.GetTile(pos);
             if (newTile != null)
             {
-                currentTiles[newTile] = pos;
+                currentTiles[pos] = new TileTracker();
             }
         }
     }
 }
 
-public class TileTimer
+public class TileTracker
 {
     int index = 0;
     float elapsedTime = 0;

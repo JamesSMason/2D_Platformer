@@ -40,7 +40,7 @@ public class ExitActivator : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("Level Complete");
+            FindObjectOfType<LevelLoader>().LoadNextLevel();
         }
     }
 
