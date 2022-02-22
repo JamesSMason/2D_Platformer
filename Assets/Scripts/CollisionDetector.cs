@@ -1,12 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CollisionDetector : MonoBehaviour
 {
+    CapsuleCollider2D myCapsuleCollider = null;
+
+    void Awake()
+    {
+        myCapsuleCollider = GetComponent<CapsuleCollider2D>();
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log($"Collided with {collision.gameObject.name}");
+        if (!collision.gameObject.CompareTag("Hazard")) { return; }
+        FindObjectOfType<GameState>().LoseLife();
     }
 }

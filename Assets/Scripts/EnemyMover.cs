@@ -39,6 +39,8 @@ public class EnemyMover : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D collision)
     {
+        if (myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Wall"))) { return; }
+
         Vector3 enemyScale = transform.localScale;
         enemyScale.x *= -1;
         transform.localScale = enemyScale;

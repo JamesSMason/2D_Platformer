@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1148149342343194811}
   m_Layer: 8
   m_Name: Key
-  m_TagString: Untagged
+  m_TagString: Collectible
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,3 +122,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8fffbd98880e6e4699a7d652a0136f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointsValue: 100

@@ -4,14 +4,14 @@ using UnityEngine.Tilemaps;
 
 public class DestructibleTiles : MonoBehaviour
 {
-    [SerializeField] TileBase[] floorSprites;
+    [SerializeField] TileBase[] floorTiles;
     [SerializeField] float timeToUpdate;
+
     bool isPlayerTouching = false;
     Tilemap tilemap = null;
 
     Dictionary<Vector3Int, TileTracker> currentTiles = new Dictionary<Vector3Int, TileTracker>();
     Dictionary<Vector3Int, TileTracker> tileLookup = new Dictionary<Vector3Int, TileTracker>();
-    List<TileBase> tilesToRemove = new List<TileBase>();
 
     void Awake()
     {
@@ -23,48 +23,14 @@ public class DestructibleTiles : MonoBehaviour
         if (currentTiles.Count == 0) { return; }
         if (isPlayerTouching)
         {
-            foreach (Vector3Int pos in currentTiles.Keys)
-            {
-                if (!tileLookup.ContainsKey(pos))
-                {
-                    tileLookup[pos] = new TileTracker();
-                }
-
-                TileTracker tracker = tileLookup[pos];
-
-                float newTime = tracker.GetElapsedTime() + Time.deltaTime;
-
-                if (newTime > timeToUpdate)
-                {
-                    int currentIndex = tracker.GetIndex() + 1;
-                    if (currentIndex < floorSprites.Length)
-                    {
-                        TileBase newTile = floorSprites[currentIndex];
-                        tilemap.SetTile(pos, newTile);
-                        tracker.SetIndex(currentIndex);
-                        tracker.SetElapsedTime(0);
-                    }
-                    else
-                    {
-                        tilemap.SetTile(pos, null);
-                    }
-                }
-                else
-                {
-                    tracker.SetElapsedTime(newTime);
-                }
-            }
+            UpdateTouchedTiles();
         }
-    }
-
-    void LateUpdate()
-    {
-        tilemap.RefreshAllTiles();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.GetType() == typeof(BoxCollider2D))
+        if (collision.gameObject.CompareTag("Player") &&
+            collision.collider.GetType() == typeof(BoxCollider2D))
         {
             isPlayerTouching = true;
             UpdateContacts(collision);
@@ -100,6 +66,57 @@ public class DestructibleTiles : MonoBehaviour
                 currentTiles[pos] = new TileTracker();
             }
         }
+    }
+
+    private void UpdateTouchedTiles()
+    {
+        foreach (Vector3Int pos in currentTiles.Keys)
+        {
+            if (!tileLookup.ContainsKey(pos))
+            {
+                tileLookup[pos] = new TileTracker();
+            }
+
+            UpdateTile(pos);
+        }
+    }
+
+    private void UpdateTile(Vector3Int pos)
+    {
+        TileTracker tracker = tileLookup[pos];
+
+        tracker.SetElapsedTime(tracker.GetElapsedTime() + Time.deltaTime);
+
+        if (tracker.GetElapsedTime() > timeToUpdate)
+        {
+            UpdateTile(pos, tracker);
+        }
+    }
+
+    private void UpdateTile(Vector3Int pos, TileTracker tracker)
+    {
+        int currentIndex = tracker.GetIndex() + 1;
+        if (currentIndex < floorTiles.Length)
+        {
+            ReplaceTile(pos, tracker, currentIndex);
+        }
+        else
+        {
+            EraseTile(pos);
+        }
+    }
+
+    private void ReplaceTile(Vector3Int pos, TileTracker tracker, int currentIndex)
+    {
+        TileBase newTile = floorTiles[currentIndex];
+        tilemap.SetTile(pos, newTile);
+        tracker.SetIndex(currentIndex);
+        tracker.SetElapsedTime(0);
+    }
+
+    private void EraseTile(Vector3Int pos)
+    {
+        tilemap.SetTile(pos, null);
     }
 }
 

@@ -1,18 +1,16 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
+    [SerializeField] float loadDelayInSeconds = 2.0f;
 
-    void Update()
+    public void NewGame()
     {
-        
+        GameState gameState = FindObjectOfType<GameState>();
+        gameState.ResetGame();
+        SceneManager.LoadScene(1);
     }
 
     public void LoadNextLevel()
@@ -22,6 +20,27 @@ public class LevelLoader : MonoBehaviour
         {
             nextLevelID = 0;
         }
-        SceneManager.LoadScene(nextLevelID);
+        StartCoroutine(DelayLoad(nextLevelID));
+    }
+
+    public void RestartLevel()
+    {
+        StartCoroutine(DelayLoad(SceneManager.GetActiveScene().buildIndex));
+    }
+
+    public void RestartGame()
+    {
+        StartCoroutine(DelayLoad(0));
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
+    private IEnumerator DelayLoad(int buildIndex)
+    {
+        yield return new WaitForSeconds(loadDelayInSeconds);
+        SceneManager.LoadScene(buildIndex);
     }
 }
