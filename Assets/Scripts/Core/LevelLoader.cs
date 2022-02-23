@@ -4,13 +4,35 @@ using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
-    [SerializeField] float loadDelayInSeconds = 2.0f;
+    [SerializeField] float loadDelayInSeconds = 0.0f;
+    [SerializeField] int firstLevelIndex = 2;
+    [SerializeField] int gameOverIndex = 1;
+
+    const string saveFile = "save";
+
+    SavingSystem savingSystem = null;
+
+    void Awake()
+    {
+        savingSystem = FindObjectOfType<SavingSystem>();
+    }
+
+    public void SaveGame()
+    {
+        savingSystem.Save(saveFile);
+    }
+
+    public void LoadGame()
+    {
+        savingSystem.Load(saveFile);
+    }
 
     public void NewGame()
     {
         GameState gameState = FindObjectOfType<GameState>();
         gameState.ResetGame();
-        SceneManager.LoadScene(1);
+        LoadGame();
+        SceneManager.LoadScene(firstLevelIndex);
     }
 
     public void LoadNextLevel()
@@ -18,7 +40,7 @@ public class LevelLoader : MonoBehaviour
         int nextLevelID = SceneManager.GetActiveScene().buildIndex + 1;
         if (nextLevelID >= SceneManager.sceneCountInBuildSettings)
         {
-            nextLevelID = 0;
+            nextLevelID = firstLevelIndex;
         }
         StartCoroutine(DelayLoad(nextLevelID));
     }
@@ -28,9 +50,9 @@ public class LevelLoader : MonoBehaviour
         StartCoroutine(DelayLoad(SceneManager.GetActiveScene().buildIndex));
     }
 
-    public void RestartGame()
+    public void LoadGameOver()
     {
-        StartCoroutine(DelayLoad(0));
+        StartCoroutine(DelayLoad(gameOverIndex));
     }
 
     public void QuitGame()

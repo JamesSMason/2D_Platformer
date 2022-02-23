@@ -6,12 +6,10 @@ public class EnemyMover : MonoBehaviour
     [SerializeField] bool isHorizontal = true;
 
     Rigidbody2D myRigidbody = null;
-    CapsuleCollider2D myCapsuleCollider = null;
 
     void Awake()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
-        myCapsuleCollider = GetComponent<CapsuleCollider2D>();
     }
 
     void Update()
@@ -30,17 +28,6 @@ public class EnemyMover : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Wall"))) { return; }
-
-        Vector3 enemyScale = transform.localScale;
-        enemyScale.x *= -1;
-        transform.localScale = enemyScale;
-    }
-
-    void OnTriggerExit2D(Collider2D collision)
-    {
-        if (myCapsuleCollider.IsTouchingLayers(LayerMask.GetMask("Wall"))) { return; }
-
         Vector3 enemyScale = transform.localScale;
         enemyScale.x *= -1;
         transform.localScale = enemyScale;

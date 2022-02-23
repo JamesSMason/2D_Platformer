@@ -40,7 +40,7 @@ public class ExitActivator : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            FindObjectOfType<LevelLoader>().LoadNextLevel();
+            StartCoroutine(FindObjectOfType<Timer>().ConvertAirToScore());
         }
     }
 
