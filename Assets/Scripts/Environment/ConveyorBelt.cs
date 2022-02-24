@@ -13,9 +13,17 @@ public class ConveyorBelt : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.transform.tag == "Feet")
+        if (collision.collider.name == "Feet")
         {
-            collision.gameObject.GetComponent<Rigidbody>().velocity = velocity;
+            FindObjectOfType<PlayerController>().SetOnConveyor(true, velocity);
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.name == "Feet")
+        {
+            FindObjectOfType<PlayerController>().SetOnConveyor(false, Vector2.zero);
         }
     }
 }

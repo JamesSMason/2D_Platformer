@@ -27,6 +27,11 @@ public class LevelLoader : MonoBehaviour
         savingSystem.Load(saveFile);
     }
 
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     public void NewGame()
     {
         GameState gameState = FindObjectOfType<GameState>();
@@ -63,6 +68,7 @@ public class LevelLoader : MonoBehaviour
     private IEnumerator DelayLoad(int buildIndex)
     {
         yield return new WaitForSeconds(loadDelayInSeconds);
+        FindObjectOfType<GameState>().SetPlayGame(true);
         SceneManager.LoadScene(buildIndex);
     }
 }

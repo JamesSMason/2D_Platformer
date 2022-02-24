@@ -5,15 +5,23 @@ public class EnemyMover : MonoBehaviour
     [SerializeField] float speed = 3.0f;
     [SerializeField] bool isHorizontal = true;
 
+    GameState gameState = null;
     Rigidbody2D myRigidbody = null;
 
     void Awake()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
+        gameState = FindObjectOfType<GameState>();
     }
 
     void Update()
     {
+        if (!gameState.GetPlayGame())
+        {
+            myRigidbody.velocity = Vector3.zero;
+            return;
+        }
+
         if (isHorizontal)
         {
             float velocity = speed * Mathf.Sign(transform.localScale.x);

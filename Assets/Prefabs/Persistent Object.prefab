@@ -192,7 +192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4803604167217696218, guid: 8ad27a077b301fd4fbe6ee2b295ecbf9, type: 3}
       propertyPath: loadDelayInSeconds
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ad27a077b301fd4fbe6ee2b295ecbf9, type: 3}

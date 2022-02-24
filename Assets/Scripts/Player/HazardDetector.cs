@@ -8,6 +8,8 @@ public class HazardDetector : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("Player") || hitHazard) { return; }
         hitHazard = true;
-        FindObjectOfType<GameState>().LoseLife();
+        GameState gameState = FindObjectOfType<GameState>();
+        gameState.SetPlayGame(false);
+        gameState.LoseLife();
     }
 }

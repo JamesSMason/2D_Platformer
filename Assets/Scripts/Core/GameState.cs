@@ -10,6 +10,8 @@ public class GameState : MonoBehaviour, ISaveable
     int livesRemaining;
     int highScore;
 
+    bool playGame = true;
+
     public Action OnScoreChanged;
     public Action OnLivesChanged;
 
@@ -33,9 +35,19 @@ public class GameState : MonoBehaviour, ISaveable
         return livesRemaining;
     }
 
+    public bool GetPlayGame()
+    {
+        return playGame;
+    }
+
     public void SetHighScore(int highScore)
     {
         this.highScore = highScore;
+    }
+
+    public void SetPlayGame(bool playGame)
+    {
+        this.playGame = playGame;
     }
 
     public void IncreaseScore(int pointsValue)

@@ -40,6 +40,7 @@ public class ExitActivator : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            FindObjectOfType<GameState>().SetPlayGame(false);
             StartCoroutine(FindObjectOfType<Timer>().ConvertAirToScore());
         }
     }

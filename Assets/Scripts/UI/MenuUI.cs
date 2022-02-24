@@ -19,6 +19,11 @@ public class MenuUI : MonoBehaviour
         levelLoader.value.QuitGame();
     }
 
+    public void LoadMainMenu()
+    {
+        levelLoader.value.LoadMainMenu();
+    }
+
     private LevelLoader GetLevelLoader()
     {
         return FindObjectOfType<LevelLoader>();
