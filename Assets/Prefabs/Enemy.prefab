@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6755041992641029622}
   - component: {fileID: 3267858933950708864}
   - component: {fileID: 1821026109}
+  - component: {fileID: 5903240462491569091}
   m_Layer: 9
   m_Name: Enemy
   m_TagString: Hazard
@@ -136,3 +137,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 3
   isHorizontal: 1
+--- !u!114 &5903240462491569091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6755041992641029621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 712268d3404517e489a585eb2d43ac6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

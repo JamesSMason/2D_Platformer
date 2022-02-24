@@ -100,6 +100,6 @@ public class GameState : MonoBehaviour, ISaveable
 
     public void RestoreState(object state)
     {
-        highScore = (int)state;
+        SetHighScore((int)state);
     }
 }

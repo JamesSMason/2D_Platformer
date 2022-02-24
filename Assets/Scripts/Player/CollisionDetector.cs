@@ -5,15 +5,29 @@ public class CollisionDetector : MonoBehaviour
     BoxCollider2D myBoxCollider = null;
     PlayerController playerController = null;
 
+    bool isFalling = false;
+
     void Awake()
     {
         playerController = transform.parent.GetComponent<PlayerController>();
         myBoxCollider = GetComponent<BoxCollider2D>();
     }
 
+    private void Update()
+    {
+        if (isFalling)
+        {
+            playerController.ResetSpeed();
+            isFalling = false;
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!myBoxCollider.IsTouchingLayers(-1))
+        bool isOnPlatform = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Platform"));
+        bool isOnBlock = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Wall"));
+        bool isNotOnGround = !isOnPlatform && !isOnBlock;
+        if (!isNotOnGround)
         {
             playerController.SetIsJumping(false);
         }
@@ -21,10 +35,10 @@ public class CollisionDetector : MonoBehaviour
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        if (transform.parent.GetComponent<Rigidbody2D>().velocity.y > 0) {  return; }
+        if (transform.parent.GetComponent<Rigidbody2D>().velocity.y > Mathf.Epsilon) { return; }
         if (!playerController.GetIsJumping())
         {
-            playerController.ResetSpeed();
+            isFalling = true;
         }
     }
 }

@@ -29,8 +29,7 @@ public class DestructibleTiles : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") &&
-            collision.collider.GetType() == typeof(BoxCollider2D))
+        if (collision.collider.name == "Feet")
         {
             isPlayerTouching = true;
             UpdateContacts(collision);

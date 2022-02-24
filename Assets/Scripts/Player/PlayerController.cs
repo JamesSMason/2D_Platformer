@@ -15,7 +15,15 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
-        myBoxCollider = GetComponentInChildren<BoxCollider2D>();
+        BoxCollider2D[] colliders = GetComponentsInChildren<BoxCollider2D>();
+        foreach (BoxCollider2D collider in colliders)
+        {
+            if (collider.name == "Feet")
+            {
+                myBoxCollider = collider;
+                break;
+            }
+        }
     }
 
     void Update()
@@ -30,6 +38,7 @@ public class PlayerController : MonoBehaviour
 
     void OnJump(InputValue value)
     {
+        if (isJumping) { return; }
         bool touchingPlatform = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Platform"));
         bool touchingWall = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Wall"));
         if (!touchingPlatform && !touchingWall) { return; }

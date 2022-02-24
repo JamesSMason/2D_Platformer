@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HazardDetector : MonoBehaviour
@@ -8,7 +6,7 @@ public class HazardDetector : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!collision.gameObject.CompareTag("Hazard") || hitHazard) { return; }
+        if (!collision.gameObject.CompareTag("Player") || hitHazard) { return; }
         hitHazard = true;
         FindObjectOfType<GameState>().LoseLife();
     }
