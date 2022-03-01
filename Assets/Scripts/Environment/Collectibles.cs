@@ -5,9 +5,26 @@ public class Collectibles : MonoBehaviour
 {
     [SerializeField] int pointsValue;
 
+    GameState gameState = null;
+    Animator animator = null;
+
     bool hasCollided = false;
 
     public Action OnItemCollected;
+
+    void Awake()
+    {
+        gameState = FindObjectOfType<GameState>();
+        animator = GetComponent<Animator>();
+    }
+
+    void Update()
+    {
+        if (!gameState.GetPlayGame())
+        {
+            animator.StartPlayback();
+        }
+    }
 
     void OnTriggerEnter2D(Collider2D collision)
     {

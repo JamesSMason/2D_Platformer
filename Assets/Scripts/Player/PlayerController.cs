@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     BoxCollider2D myBoxCollider = null;
     GameState gameState = null;
 
+    Animator animator = null;
+
     bool isJumping = false;
     bool isOnBelt = false;
     bool firstTouch = false;
@@ -33,6 +35,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         gameState = FindObjectOfType<GameState>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -41,6 +44,7 @@ public class PlayerController : MonoBehaviour
         {
             myRigidbody.velocity = Vector2.zero;
             myRigidbody.gravityScale = 0;
+            animator.StartPlayback();
             return;
         }
         myRigidbody.gravityScale = 1;
@@ -51,6 +55,15 @@ public class PlayerController : MonoBehaviour
             {
                 FindObjectOfType<GameState>().LoseLife();
             }
+        }
+
+        if (myRigidbody.velocity.x > Mathf.Epsilon || myRigidbody.velocity.x < -Mathf.Epsilon)
+        {
+            animator.StopPlayback();
+        }
+        else
+        {
+            animator.StartPlayback();
         }
     }
 
@@ -65,6 +78,15 @@ public class PlayerController : MonoBehaviour
         if (moveInput.x == 0)
         {
             firstTouch = false;
+        }
+        else
+        {
+            Vector3 playerScale = transform.localScale;
+            if (Mathf.Sign(playerScale.x) != Mathf.Sign(moveInput.x))
+            {
+                playerScale.x *= -1;
+            }
+            transform.localScale = playerScale;
         }
     }
 
@@ -112,9 +134,10 @@ public class PlayerController : MonoBehaviour
 
         if (isOnBelt)
         {
-            if (Mathf.Sign(beltVelocity.x) == Mathf.Sign(moveInput.x))
+            if (Mathf.Sign(beltVelocity.x) == Mathf.Sign(moveInput.x) || moveInput.x == 0)
             {
                 myRigidbody.velocity = new Vector2(beltVelocity.x, myRigidbody.velocity.y);
+                firstTouch = false;
             }
             else
             {

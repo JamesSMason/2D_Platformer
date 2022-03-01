@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: Yellow_Brick
+  m_Name: Bush_Hazard
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: ba1fdd9bb33e22d4a929bb2da89e1486, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6707ca5ede2d699439da8a9c9de39dcb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

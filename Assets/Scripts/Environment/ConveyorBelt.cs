@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class ConveyorBelt : MonoBehaviour
 {
@@ -6,9 +7,22 @@ public class ConveyorBelt : MonoBehaviour
 
     Vector2 velocity = Vector2.zero;
 
+    GameState gameState = null;
+    Tilemap tilemap = null;
+
     void Awake()
     {
+        gameState = FindObjectOfType<GameState>();
+        tilemap = GetComponent<Tilemap>();
         velocity = new Vector2(beltSpeed, 0.0f);
+    }
+
+    void Update()
+    {
+        if (!gameState.GetPlayGame())
+        {
+            tilemap.animationFrameRate = 0;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

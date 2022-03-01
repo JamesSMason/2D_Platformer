@@ -7,11 +7,13 @@ public class EnemyMover : MonoBehaviour
 
     GameState gameState = null;
     Rigidbody2D myRigidbody = null;
+    Animator animator = null;
 
     void Awake()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
         gameState = FindObjectOfType<GameState>();
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -19,6 +21,7 @@ public class EnemyMover : MonoBehaviour
         if (!gameState.GetPlayGame())
         {
             myRigidbody.velocity = Vector3.zero;
+            animator.StartPlayback();
             return;
         }
 
