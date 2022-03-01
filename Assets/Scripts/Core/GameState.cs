@@ -103,6 +103,7 @@ public class GameState : MonoBehaviour, ISaveable
         {
             OnScoreChanged();
         }
+        FindObjectOfType<LevelLoader>().LoadGame();
     }
 
     public object CaptureState()

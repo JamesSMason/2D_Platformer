@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CollapsingFloor4
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: 83c3fbfbd1e77fe4ca2fb8e85cda8f13, type: 3}
-  m_Color: {r: 0.78431374, g: 0.14509805, b: 0.14509805, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
     e01: 0

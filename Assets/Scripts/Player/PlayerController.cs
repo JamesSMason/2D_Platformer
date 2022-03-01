@@ -25,15 +25,7 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
-        BoxCollider2D[] colliders = GetComponentsInChildren<BoxCollider2D>();
-        foreach (BoxCollider2D collider in colliders)
-        {
-            if (collider.name == "Feet")
-            {
-                myBoxCollider = collider;
-                break;
-            }
-        }
+        myBoxCollider = GetComponentInChildren<BoxCollider2D>();
         gameState = FindObjectOfType<GameState>();
         animator = GetComponent<Animator>();
     }
@@ -57,7 +49,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (myRigidbody.velocity.x > Mathf.Epsilon || myRigidbody.velocity.x < -Mathf.Epsilon)
+        if (Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon)
         {
             animator.StopPlayback();
         }
@@ -79,23 +71,13 @@ public class PlayerController : MonoBehaviour
         {
             firstTouch = false;
         }
-        else
-        {
-            Vector3 playerScale = transform.localScale;
-            if (Mathf.Sign(playerScale.x) != Mathf.Sign(moveInput.x))
-            {
-                playerScale.x *= -1;
-            }
-            transform.localScale = playerScale;
-        }
     }
 
     void OnJump(InputValue value)
     {
         if (isJumping) { return; }
         bool touchingPlatform = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Platform"));
-        bool touchingWall = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Wall"));
-        if (!touchingPlatform && !touchingWall) { return; }
+        if (!touchingPlatform) { return; }
 
         if (value.isPressed)
         {
@@ -129,8 +111,7 @@ public class PlayerController : MonoBehaviour
     private void Run()
     {
         bool touchingPlatform = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Platform"));
-        bool touchingWall = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Wall"));
-        if (!touchingPlatform && !touchingWall) { return; }
+        if (!touchingPlatform) { return; }
 
         if (isOnBelt)
         {
@@ -154,6 +135,19 @@ public class PlayerController : MonoBehaviour
         else
         {
             myRigidbody.velocity = new Vector2(moveInput.x * velocity, myRigidbody.velocity.y);
+        }
+
+        if (!isJumping && touchingPlatform)
+        {
+            Vector3 playerScale = transform.localScale;
+            if (Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon)
+            {
+                if (Mathf.Sign(playerScale.x) != Mathf.Sign(myRigidbody.velocity.x))
+                {
+                    playerScale.x *= -1;
+                }
+                transform.localScale = playerScale;
+            }
         }
     }
 }

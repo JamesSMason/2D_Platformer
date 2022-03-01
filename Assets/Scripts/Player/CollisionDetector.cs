@@ -25,8 +25,7 @@ public class CollisionDetector : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         bool isOnPlatform = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Platform"));
-        bool isOnBlock = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Wall"));
-        bool isNotOnGround = !isOnPlatform && !isOnBlock;
+        bool isNotOnGround = !isOnPlatform;
         if (!isNotOnGround)
         {
             playerController.SetIsJumping(false);
