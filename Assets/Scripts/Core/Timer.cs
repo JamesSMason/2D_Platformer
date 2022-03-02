@@ -2,59 +2,59 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class Timer : MonoBehaviour
+namespace MM.Core
 {
-    [SerializeField] float levelTimeInSeconds = 180.0f;
-    [SerializeField] int scorePerAirUnit = 10;
-    [SerializeField] float delay = 0.01f;
-
-    GameState gameState;
-
-    bool isGameLive = true;
-    float currentTime = 0.0f;
-
-    public Action OnSliderChanged;
-
-    void Awake()
+    public class Timer : MonoBehaviour
     {
-        gameState = FindObjectOfType<GameState>();
-    }
+        [SerializeField] float levelTimeInSeconds = 180.0f;
+        [SerializeField] int scorePerAirUnit = 10;
+        [SerializeField] float delay = 0.01f;
 
-    void Update()
-    {
-        if (isGameLive)
+        GameState gameState;
+
+        bool isGameLive = true;
+        float currentTime = 0.0f;
+
+        void Awake()
         {
-            currentTime += Time.deltaTime;
-            if (OnSliderChanged != null)
+            gameState = FindObjectOfType<GameState>();
+        }
+
+        void Update()
+        {
+            if (isGameLive)
             {
-                OnSliderChanged();
-            }
-            if (currentTime > levelTimeInSeconds)
-            {
-                gameState.LoseLife();
+                currentTime += Time.deltaTime;
+                if (OnSliderChanged != null)
+                {
+                    OnSliderChanged();
+                }
+                if (currentTime > levelTimeInSeconds)
+                {
+                    gameState.LoseLife();
+                }
             }
         }
-    }
 
-    public float GetNormalisedTime()
-    {
-        return 1 - (currentTime / levelTimeInSeconds);
-    }
-
-    public IEnumerator ConvertAirToScore()
-    {
-        isGameLive = false;
-        float timeRemaining = levelTimeInSeconds - currentTime;
-        for (float i = 0; i < timeRemaining; i++)
+        public float GetNormalisedTime()
         {
-            gameState.IncreaseScore(scorePerAirUnit);
-            currentTime++;
-            if (OnSliderChanged != null)
-            {
-                OnSliderChanged();
-            }
-            yield return new WaitForSeconds(delay);
+            return 1 - (currentTime / levelTimeInSeconds);
         }
-        FindObjectOfType<LevelLoader>().LoadNextLevel();
+
+        public IEnumerator ConvertAirToScore()
+        {
+            isGameLive = false;
+            float timeRemaining = levelTimeInSeconds - currentTime;
+            for (float i = 0; i < timeRemaining; i++)
+            {
+                gameState.IncreaseScore(scorePerAirUnit);
+                currentTime++;
+                if (OnSliderChanged != null)
+                {
+                    OnSliderChanged();
+                }
+                yield return new WaitForSeconds(delay);
+            }
+        }
     }
 }

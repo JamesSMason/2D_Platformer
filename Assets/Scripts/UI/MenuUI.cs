@@ -1,31 +1,35 @@
+using MM.Core;
 using UnityEngine;
 
-public class MenuUI : MonoBehaviour
+namespace MM.UI
 {
-    LazyValue<LevelLoader> levelLoader = null;
-
-    void Awake()
+    public class MenuUI : MonoBehaviour
     {
-        levelLoader = new LazyValue<LevelLoader>(GetLevelLoader);
-    }
+        LazyValue<LevelLoader> levelLoader = null;
 
-    public void StartNewGame()
-    {
-        levelLoader.value.NewGame();
-    }
+        void Awake()
+        {
+            levelLoader = new LazyValue<LevelLoader>(GetLevelLoader);
+        }
 
-    public void QuitGame()
-    {
-        levelLoader.value.QuitGame();
-    }
+        public void StartNewGame()
+        {
+            levelLoader.value.NewGame();
+        }
 
-    public void LoadMainMenu()
-    {
-        levelLoader.value.LoadMainMenu();
-    }
+        public void QuitGame()
+        {
+            levelLoader.value.QuitGame();
+        }
 
-    private LevelLoader GetLevelLoader()
-    {
-        return FindObjectOfType<LevelLoader>();
+        public void LoadMainMenu()
+        {
+            levelLoader.value.LoadMainMenu();
+        }
+
+        private LevelLoader GetLevelLoader()
+        {
+            return FindObjectOfType<LevelLoader>();
+        }
     }
 }

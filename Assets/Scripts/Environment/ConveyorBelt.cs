@@ -1,43 +1,48 @@
+using MM.Core;
+using MM.Player;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class ConveyorBelt : MonoBehaviour
+namespace MM.Environment
 {
-    [SerializeField] float beltSpeed = 3.0f;
-
-    Vector2 velocity = Vector2.zero;
-
-    GameState gameState = null;
-    Tilemap tilemap = null;
-
-    void Awake()
+    public class ConveyorBelt : MonoBehaviour
     {
-        gameState = FindObjectOfType<GameState>();
-        tilemap = GetComponent<Tilemap>();
-        velocity = new Vector2(beltSpeed, 0.0f);
-    }
+        [SerializeField] float beltSpeed = 3.0f;
 
-    void Update()
-    {
-        if (!gameState.GetPlayGame())
+        Vector2 velocity = Vector2.zero;
+
+        GameState gameState = null;
+        Tilemap tilemap = null;
+
+        void Awake()
         {
-            tilemap.animationFrameRate = 0;
+            gameState = FindObjectOfType<GameState>();
+            tilemap = GetComponent<Tilemap>();
+            velocity = new Vector2(beltSpeed, 0.0f);
         }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.collider.name == "Feet")
+        void Update()
         {
-            FindObjectOfType<PlayerController>().SetOnConveyor(true, velocity);
+            if (!gameState.GetPlayGame())
+            {
+                tilemap.animationFrameRate = 0;
+            }
         }
-    }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.collider.name == "Feet")
+        private void OnCollisionEnter2D(Collision2D collision)
         {
-            FindObjectOfType<PlayerController>().SetOnConveyor(false, Vector2.zero);
+            if (collision.collider.name == "Feet")
+            {
+                FindObjectOfType<PlayerController>().SetOnConveyor(true, velocity);
+            }
+        }
+
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            if (collision.collider.name == "Feet")
+            {
+                FindObjectOfType<PlayerController>().SetOnConveyor(false, Vector2.zero);
+            }
         }
     }
 }

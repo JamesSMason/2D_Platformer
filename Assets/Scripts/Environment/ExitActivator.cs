@@ -1,56 +1,62 @@
+using MM.Core;
 using UnityEngine;
 
-public class ExitActivator : MonoBehaviour
+namespace MM.Environment
 {
-    BoxCollider2D myBoxCollider = null;
-    Collectibles[] collectibles = null;
-    int itemsToCollect = 0;
-
-    void Awake()
+    public class ExitActivator : MonoBehaviour
     {
-        myBoxCollider = GetComponent<BoxCollider2D>();
-        collectibles = FindObjectsOfType<Collectibles>();
-    }
+        BoxCollider2D myBoxCollider = null;
+        Collectibles[] collectibles = null;
+        GameState gameState = null;
 
-    void Start()
-    {
-        myBoxCollider.enabled = false;
-        itemsToCollect = FindObjectsOfType<Collectibles>().Length;
-    }
+        int itemsToCollect = 0;
 
-    void OnEnable()
-    {
-        if (collectibles == null) { return; }
-        foreach (Collectibles collectible in collectibles)
+        void Awake()
         {
-            collectible.OnItemCollected += ReduceCollectibles;
+            myBoxCollider = GetComponent<BoxCollider2D>();
+            collectibles = FindObjectsOfType<Collectibles>();
+            gameState = FindObjectOfType<GameState>();
         }
-    }
 
-    void OnDisable()
-    {
-        if (collectibles == null) { return; }
-        foreach (Collectibles collectible in collectibles)
+        void Start()
         {
-            collectible.OnItemCollected -= ReduceCollectibles;
+            myBoxCollider.enabled = false;
+            itemsToCollect = collectibles.Length;
         }
-    }
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
+        void OnEnable()
         {
-            FindObjectOfType<GameState>().SetPlayGame(false);
-            StartCoroutine(FindObjectOfType<Timer>().ConvertAirToScore());
+            if (collectibles == null) { return; }
+            foreach (Collectibles collectible in collectibles)
+            {
+                collectible.OnItemCollected += ReduceCollectibles;
+            }
         }
-    }
 
-    private void ReduceCollectibles()
-    {
-        itemsToCollect--;
-        if (itemsToCollect <= 0)
+        void OnDisable()
         {
-            myBoxCollider.enabled = true;
+            if (collectibles == null) { return; }
+            foreach (Collectibles collectible in collectibles)
+            {
+                collectible.OnItemCollected -= ReduceCollectibles;
+            }
+        }
+
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Player"))
+            {
+                gameState.LevelComplete();
+            }
+        }
+
+        private void ReduceCollectibles()
+        {
+            itemsToCollect--;
+            if (itemsToCollect <= 0)
+            {
+                myBoxCollider.enabled = true;
+            }
         }
     }
 }

@@ -1,40 +1,44 @@
+using MM.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimerUI : MonoBehaviour
+namespace MM.UI
 {
-    [SerializeField] Slider slider = null;
-
-    Timer timer = null;
-
-    void Awake()
+    public class TimerUI : MonoBehaviour
     {
-       timer = FindObjectOfType<Timer>();
-    }
+        [SerializeField] Slider slider = null;
 
-    void Start()
-    {
-        UpdateSliderUI();
-    }
+        GameState gameState = null;
 
-    void OnEnable()
-    {
-        if (timer != null)
+        void Awake()
         {
-            timer.OnSliderChanged += UpdateSliderUI;
+            gameState = FindObjectOfType<GameState>();
         }
-    }
 
-    void OnDisable()
-    {
-        if (timer != null)
+        void Start()
         {
-            timer.OnSliderChanged -= UpdateSliderUI;
+            UpdateSliderUI();
         }
-    }
 
-    private void UpdateSliderUI()
-    {
-        slider.value = timer.GetNormalisedTime();
+        void OnEnable()
+        {
+            if (gameState != null)
+            {
+                gameState.OnSliderChanged += UpdateSliderUI;
+            }
+        }
+
+        void OnDisable()
+        {
+            if (gameState != null)
+            {
+                gameState.OnSliderChanged -= UpdateSliderUI;
+            }
+        }
+
+        private void UpdateSliderUI()
+        {
+            slider.value = gameState.GetNormalisedTime();
+        }
     }
 }

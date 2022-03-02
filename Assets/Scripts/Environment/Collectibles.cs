@@ -1,37 +1,41 @@
+using MM.Core;
 using System;
 using UnityEngine;
 
-public class Collectibles : MonoBehaviour
+namespace MM.Environment
 {
-    [SerializeField] int pointsValue;
-
-    GameState gameState = null;
-    Animator animator = null;
-
-    bool hasCollided = false;
-
-    public Action OnItemCollected;
-
-    void Awake()
+    public class Collectibles : MonoBehaviour
     {
-        gameState = FindObjectOfType<GameState>();
-        animator = GetComponent<Animator>();
-    }
+        [SerializeField] int pointsValue;
 
-    void Update()
-    {
-        if (!gameState.GetPlayGame())
+        GameState gameState = null;
+        Animator animator = null;
+
+        bool hasCollided = false;
+
+        public Action OnItemCollected;
+
+        void Awake()
         {
-            animator.StartPlayback();
+            gameState = FindObjectOfType<GameState>();
+            animator = GetComponent<Animator>();
         }
-    }
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (!collision.CompareTag("Player") || hasCollided) {  return; }
-        hasCollided = true;
-        OnItemCollected();
-        FindObjectOfType<GameState>().IncreaseScore(pointsValue);
-        Destroy(this.gameObject);
+        void Update()
+        {
+            if (!gameState.GetPlayGame())
+            {
+                animator.StartPlayback();
+            }
+        }
+
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (!collision.CompareTag("Player") || hasCollided) { return; }
+            hasCollided = true;
+            OnItemCollected();
+            FindObjectOfType<GameState>().IncreaseScore(pointsValue);
+            Destroy(this.gameObject);
+        }
     }
 }

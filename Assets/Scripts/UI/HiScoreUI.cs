@@ -1,28 +1,25 @@
 using UnityEngine;
 using TMPro;
+using MM.Core;
 
-public class HiScoreUI : MonoBehaviour
+namespace MM.UI
 {
-    GameState gameState = null;
-    void Awake()
+    public class HiScoreUI : MonoBehaviour
     {
-        gameState = FindObjectOfType<GameState>();
-    }
+        GameState gameState = null;
 
-    void Start()
-    {
-        if (gameState.GetScore() > gameState.GetHighScore())
+        void Awake()
         {
-            gameState.SetHighScore(gameState.GetScore());
-            GetComponent<TextMeshProUGUI>().text = $"You achieved a new High Score of {gameState.GetHighScore()}!";
-            LevelLoader levelLoader = FindObjectOfType<LevelLoader>();
-            if (levelLoader == null)
+            gameState = FindObjectOfType<GameState>();
+        }
+
+        void Start()
+        {
+            if (gameState.GetScore() > gameState.GetHighScore())
             {
-                Debug.Log("nope. not here.");
-            }
-            else
-            {
-                levelLoader.SaveGame();
+                gameState.SetHighScore(gameState.GetScore());
+                GetComponent<TextMeshProUGUI>().text = $"You achieved a new High Score of {gameState.GetHighScore()}!";
+                FindObjectOfType<LevelLoader>().SaveGame();
             }
         }
     }

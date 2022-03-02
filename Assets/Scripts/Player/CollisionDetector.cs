@@ -1,43 +1,46 @@
 using UnityEngine;
 
-public class CollisionDetector : MonoBehaviour
+namespace MM.Player
 {
-    BoxCollider2D myBoxCollider = null;
-    PlayerController playerController = null;
-
-    bool isFalling = false;
-
-    void Awake()
+    public class CollisionDetector : MonoBehaviour
     {
-        playerController = transform.parent.GetComponent<PlayerController>();
-        myBoxCollider = GetComponent<BoxCollider2D>();
-    }
+        BoxCollider2D myBoxCollider = null;
+        PlayerController playerController = null;
 
-    private void Update()
-    {
-        if (isFalling)
+        bool isFalling = false;
+
+        void Awake()
         {
-            playerController.ResetSpeed();
-            isFalling = false;
+            playerController = transform.parent.GetComponent<PlayerController>();
+            myBoxCollider = GetComponent<BoxCollider2D>();
         }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        bool isOnPlatform = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Platform"));
-        bool isNotOnGround = !isOnPlatform;
-        if (!isNotOnGround)
+        void Update()
         {
-            playerController.SetIsJumping(false);
+            if (isFalling)
+            {
+                playerController.ResetSpeed();
+                isFalling = false;
+            }
         }
-    }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (transform.parent.GetComponent<Rigidbody2D>().velocity.y > Mathf.Epsilon) { return; }
-        if (!playerController.GetIsJumping())
+        void OnCollisionEnter2D(Collision2D collision)
         {
-            isFalling = true;
+            bool isOnPlatform = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Platform"));
+            bool isNotOnGround = !isOnPlatform;
+            if (!isNotOnGround)
+            {
+                playerController.SetIsJumping(false);
+            }
+        }
+
+        void OnCollisionExit2D(Collision2D collision)
+        {
+            if (transform.parent.GetComponent<Rigidbody2D>().velocity.y > Mathf.Epsilon) { return; }
+            if (!playerController.GetIsJumping())
+            {
+                isFalling = true;
+            }
         }
     }
 }

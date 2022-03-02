@@ -1,15 +1,17 @@
+using MM.Core;
 using UnityEngine;
 
-public class HazardDetector : MonoBehaviour
+namespace MM.Environment
 {
-    bool hitHazard = false;
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    public class HazardDetector : MonoBehaviour
     {
-        if (!collision.gameObject.CompareTag("Player") || hitHazard) { return; }
-        hitHazard = true;
-        GameState gameState = FindObjectOfType<GameState>();
-        gameState.SetPlayGame(false);
-        gameState.LoseLife();
+        bool hitHazard = false;
+
+        void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (!collision.gameObject.CompareTag("Player") || hitHazard) { return; }
+            hitHazard = true;
+            FindObjectOfType<GameState>().LoseLife();
+        }
     }
 }

@@ -1,23 +1,26 @@
 using UnityEngine;
 
-public class PersistentObjectSpawner : MonoBehaviour
+namespace MM.Core
 {
-    [SerializeField] GameObject persistentObjectPrefab = null;
-
-    static bool hasSpawned = false;
-
-    void Awake()
+    public class PersistentObjectSpawner : MonoBehaviour
     {
-        if (hasSpawned) {  return; }
+        [SerializeField] GameObject persistentObjectPrefab = null;
 
-        SpawnPersistentObject();
+        static bool hasSpawned = false;
 
-        hasSpawned = true;
-    }
+        void Awake()
+        {
+            if (hasSpawned) { return; }
 
-    private void SpawnPersistentObject()
-    {
-        GameObject persistentObject = Instantiate(persistentObjectPrefab);
-        DontDestroyOnLoad(persistentObject);
+            SpawnPersistentObject();
+
+            hasSpawned = true;
+        }
+
+        private void SpawnPersistentObject()
+        {
+            GameObject persistentObject = Instantiate(persistentObjectPrefab);
+            DontDestroyOnLoad(persistentObject);
+        }
     }
 }

@@ -1,40 +1,44 @@
+using MM.Core;
 using TMPro;
 using UnityEngine;
 
-public class ScoreUI : MonoBehaviour
+namespace MM.UI
 {
-    [SerializeField] TextMeshProUGUI scoreText = null;
-    [SerializeField] TextMeshProUGUI highScoreText = null;
-    LazyValue<GameState> gameState = null;
-
-    void Awake()
+    public class ScoreUI : MonoBehaviour
     {
-        gameState = new LazyValue<GameState>(GetGameState);
-    }
+        [SerializeField] TextMeshProUGUI scoreText = null;
+        [SerializeField] TextMeshProUGUI highScoreText = null;
+        LazyValue<GameState> gameState = null;
 
-    void Start()
-    {
-        highScoreText.text = $"{gameState.value.GetHighScore():000000}";
-        UpdateScoreUI();
-    }
+        void Awake()
+        {
+            gameState = new LazyValue<GameState>(GetGameState);
+        }
 
-    void OnEnable()
-    {
-        gameState.value.OnScoreChanged += UpdateScoreUI;
-    }
+        void Start()
+        {
+            highScoreText.text = $"{gameState.value.GetHighScore():000000}";
+            UpdateScoreUI();
+        }
 
-    void OnDisable()
-    {
-        gameState.value.OnScoreChanged -= UpdateScoreUI;
-    }
+        void OnEnable()
+        {
+            gameState.value.OnScoreChanged += UpdateScoreUI;
+        }
 
-    private GameState GetGameState()
-    {
-        return FindObjectOfType<GameState>();
-    }
+        void OnDisable()
+        {
+            gameState.value.OnScoreChanged -= UpdateScoreUI;
+        }
 
-    private void UpdateScoreUI()
-    {
-        scoreText.text = $"{gameState.value.GetScore():000000}";
+        private GameState GetGameState()
+        {
+            return FindObjectOfType<GameState>();
+        }
+
+        private void UpdateScoreUI()
+        {
+            scoreText.text = $"{gameState.value.GetScore():000000}";
+        }
     }
 }

@@ -1,118 +1,136 @@
+using MM.Saving;
 using System;
 using UnityEngine;
 
-public class GameState : MonoBehaviour, ISaveable
+namespace MM.Core
 {
-    [SerializeField] int numberOfLives = 3;
-    [SerializeField] int scoreForExtraLife = 20000;
-
-    int score;
-    int livesRemaining;
-    int highScore;
-
-    bool playGame = true;
-
-    public Action OnScoreChanged;
-    public Action OnLivesChanged;
-
-    private void Start()
+    public class GameState : MonoBehaviour, ISaveable
     {
-        ResetGame();
-    }
+        [SerializeField] int numberOfLives = 3;
+        [SerializeField] int scoreForExtraLife = 20000;
 
-    public int GetScore()
-    {
-        return score;
-    }
+        int score;
+        int livesRemaining;
+        int highScore;
 
-    public int GetHighScore()
-    {
-        return highScore;
-    }
+        bool playGame = true;
 
-    public int GetLives()
-    {
-        return livesRemaining;
-    }
+        public Action OnScoreChanged;
+        public Action OnLivesChanged;
+        public Action OnSliderChanged;
 
-    public bool GetPlayGame()
-    {
-        return playGame;
-    }
-
-    public void SetHighScore(int highScore)
-    {
-        this.highScore = highScore;
-    }
-
-    public void SetPlayGame(bool playGame)
-    {
-        this.playGame = playGame;
-    }
-
-    public void IncreaseScore(int pointsValue)
-    {
-        int newScore = score + pointsValue;
-        if (newScore > scoreForExtraLife && score < scoreForExtraLife)
+        private void Start()
         {
-            GainLife();
+            ResetGame();
         }
-        score = newScore;
-        if (OnScoreChanged != null)
-        {
-            OnScoreChanged();
-        }
-    }
 
-    public void LoseLife()
-    {
-        livesRemaining--;
-        if (OnLivesChanged != null)
+        public int GetScore()
         {
-            OnLivesChanged();
+            return score;
         }
-        LevelLoader levelLoader = FindObjectOfType<LevelLoader>();
-        if (livesRemaining <= 0)
-        {
-            levelLoader.LoadGameOver();
-        }
-        else
-        {
-            levelLoader.RestartLevel();
-        }
-    }
 
-    public void GainLife()
-    {
-        livesRemaining++;
-        if (OnLivesChanged != null)
+        public int GetHighScore()
         {
-            OnLivesChanged();
+            return highScore;
         }
-    }
 
-    public void ResetGame()
-    {
-        livesRemaining = numberOfLives;
-        score = 0;
-        if (OnLivesChanged != null)
+        public int GetLives()
         {
-            OnLivesChanged();
+            return livesRemaining;
         }
-        if (OnScoreChanged != null)
+
+        public bool GetPlayGame()
         {
-            OnScoreChanged();
+            return playGame;
         }
-        FindObjectOfType<LevelLoader>().LoadGame();
-    }
 
-    public object CaptureState()
-    {
-        return highScore;
-    }
+        public void SetHighScore(int highScore)
+        {
+            this.highScore = highScore;
+        }
 
-    public void RestoreState(object state)
-    {
-        SetHighScore((int)state);
+        public void SetPlayGame(bool playGame)
+        {
+            this.playGame = playGame;
+        }
+
+        public void IncreaseScore(int pointsValue)
+        {
+            int newScore = score + pointsValue;
+            if (newScore > scoreForExtraLife && score < scoreForExtraLife)
+            {
+                GainLife();
+            }
+            score = newScore;
+            if (OnScoreChanged != null)
+            {
+                OnScoreChanged();
+            }
+        }
+
+        public void LevelComplete()
+        {
+            SetPlayGame(false);
+            StartCoroutine(FindObjectOfType<Timer>().ConvertAirToScore());
+            FindObjectOfType<LevelLoader>().LoadNextLevel();
+        }
+
+        public void LoseLife()
+        {
+            SetPlayGame(false);
+            livesRemaining--;
+            if (OnLivesChanged != null)
+            {
+                OnLivesChanged();
+            }
+            LevelLoader levelLoader = FindObjectOfType<LevelLoader>();
+            if (livesRemaining <= 0)
+            {
+                levelLoader.LoadGameOver();
+            }
+            else
+            {
+                levelLoader.RestartLevel();
+            }
+        }
+
+        public void GainLife()
+        {
+            livesRemaining++;
+            if (OnLivesChanged != null)
+            {
+                OnLivesChanged();
+            }
+        }
+
+        public void ResetGame()
+        {
+            livesRemaining = numberOfLives;
+            score = 0;
+            if (OnLivesChanged != null)
+            {
+                OnLivesChanged();
+            }
+            if (OnScoreChanged != null)
+            {
+                OnScoreChanged();
+            }
+            FindObjectOfType<LevelLoader>().LoadGame();
+        }
+
+        public float GetNormalisedTime()
+        {
+            return timer.GetNormalisedTime();
+        }
+
+        public object CaptureState()
+        {
+            return highScore;
+        }
+
+        public void RestoreState(object state)
+        {
+            SetHighScore((int)state);
+        }
     }
 }
