@@ -130,9 +130,33 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1346225702}
     m_Modifications:
+    - target: {fileID: 2536195067420274373, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c1691716b76ed574d97692c89fe39b65, type: 2}
     - target: {fileID: 6755041992641029621, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 6755041992641029622, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6755041992641029622, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -3289575033469672952, guid: 78aa4edbd093fd74688a6f42dbbfca1f, type: 3}
+    - target: {fileID: 6755041992641029622, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
+      propertyPath: m_Color.b
+      value: 0.12255252
+      objectReference: {fileID: 0}
+    - target: {fileID: 6755041992641029622, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
+      propertyPath: m_Color.g
+      value: 0.9622642
+      objectReference: {fileID: 0}
+    - target: {fileID: 6755041992641029622, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
+      propertyPath: m_Color.r
+      value: 0.95818555
       objectReference: {fileID: 0}
     - target: {fileID: 6755041992641029625, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
       propertyPath: m_RootOrder
@@ -601,10 +625,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1346225702}
     m_Modifications:
+    - target: {fileID: 2536195067420274373, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c1691716b76ed574d97692c89fe39b65, type: 2}
     - target: {fileID: 6755041992641029621, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
       propertyPath: m_Name
       value: Enemy (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6755041992641029622, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
+      propertyPath: m_FlipX
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6755041992641029622, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -3289575033469672952, guid: 78aa4edbd093fd74688a6f42dbbfca1f, type: 3}
     - target: {fileID: 6755041992641029622, guid: ca8716305875efb4dac9ca62aec53ad9, type: 3}
       propertyPath: m_Color.b
       value: 0.9716981
