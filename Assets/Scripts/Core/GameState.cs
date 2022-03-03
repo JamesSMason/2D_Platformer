@@ -1,42 +1,65 @@
-using MM.Saving;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace MM.Core
 {
-    public class GameState : MonoBehaviour, ISaveable
+    public class GameState : MonoBehaviour
     {
-        [SerializeField] int numberOfLives = 3;
         [SerializeField] int scoreForExtraLife = 20000;
-
-        int score;
-        int livesRemaining;
-        int highScore;
+        [SerializeField] int scorePerAirUnit = 10;
+        [SerializeField] float delay = 0.01f;
 
         bool playGame = true;
+
+        Timer timer = null;
+        Score score = null;
+        Lives lives = null;
+        LazyValue<LevelLoader> levelLoader = null;
+        LazyValue<SavingWrapper> savingWrapper = null;
 
         public Action OnScoreChanged;
         public Action OnLivesChanged;
         public Action OnSliderChanged;
 
-        private void Start()
+        void Awake()
         {
-            ResetGame();
+            timer = GetComponent<Timer>();
+            score = FindObjectOfType<Score>();
+            lives = FindObjectOfType<Lives>();
+            levelLoader = new LazyValue<LevelLoader>(GetLevelLoader);
+            savingWrapper = new LazyValue<SavingWrapper>(GetSavingWrapper);
+        }
+
+        void Update()
+        {
+            if (playGame)
+            {
+                timer.UpdateTimer(Time.deltaTime);
+                if (OnSliderChanged != null)
+                {
+                    OnSliderChanged();
+                }
+                if (timer.GetCurrentTime() > timer.GetLevelTime())
+                {
+                    LoseLife();
+                }
+            }
         }
 
         public int GetScore()
         {
-            return score;
+            return score.GetScore();
         }
 
         public int GetHighScore()
         {
-            return highScore;
+            return score.GetHighScore();
         }
 
         public int GetLives()
         {
-            return livesRemaining;
+            return lives.GetLivesRemaining();
         }
 
         public bool GetPlayGame()
@@ -46,7 +69,7 @@ namespace MM.Core
 
         public void SetHighScore(int highScore)
         {
-            this.highScore = highScore;
+            score.SetHighScore(highScore);
         }
 
         public void SetPlayGame(bool playGame)
@@ -56,12 +79,12 @@ namespace MM.Core
 
         public void IncreaseScore(int pointsValue)
         {
-            int newScore = score + pointsValue;
-            if (newScore > scoreForExtraLife && score < scoreForExtraLife)
+            int newScore = score.GetScore() + pointsValue;
+            if (newScore > scoreForExtraLife && score.GetScore() < scoreForExtraLife)
             {
                 GainLife();
             }
-            score = newScore;
+            score.SetScore(newScore);
             if (OnScoreChanged != null)
             {
                 OnScoreChanged();
@@ -71,42 +94,58 @@ namespace MM.Core
         public void LevelComplete()
         {
             SetPlayGame(false);
-            StartCoroutine(FindObjectOfType<Timer>().ConvertAirToScore());
-            FindObjectOfType<LevelLoader>().LoadNextLevel();
+            StartCoroutine(ConvertAirToScore());
+            levelLoader.value.LoadNextLevel();
         }
 
         public void LoseLife()
         {
             SetPlayGame(false);
-            livesRemaining--;
+            lives.SetLivesRemaining(GetLives() - 1);
             if (OnLivesChanged != null)
             {
                 OnLivesChanged();
             }
-            LevelLoader levelLoader = FindObjectOfType<LevelLoader>();
-            if (livesRemaining <= 0)
+            if (GetLives() <= 0)
             {
-                levelLoader.LoadGameOver();
+                levelLoader.value.LoadGameOver();
             }
             else
             {
-                levelLoader.RestartLevel();
+                levelLoader.value.RestartLevel();
             }
         }
 
         public void GainLife()
         {
-            livesRemaining++;
+            lives.SetLivesRemaining(GetLives() + 1);
             if (OnLivesChanged != null)
             {
                 OnLivesChanged();
             }
         }
 
+        public IEnumerator ConvertAirToScore()
+        {
+            playGame = false;
+            float timeRemaining = timer.GetLevelTime() - timer.GetCurrentTime();
+            for (float i = 0; i < timeRemaining; i++)
+            {
+                IncreaseScore(scorePerAirUnit);
+                timer.UpdateTimer(1.0f);
+                if (OnSliderChanged != null)
+                {
+                    OnSliderChanged();
+                }
+                yield return new WaitForSeconds(delay);
+            }
+        }
+
         public void ResetGame()
         {
-            livesRemaining = numberOfLives;
-            score = 0;
+            lives.ResetLives();
+            score.SetScore(0);
+            playGame = true;
             if (OnLivesChanged != null)
             {
                 OnLivesChanged();
@@ -115,7 +154,7 @@ namespace MM.Core
             {
                 OnScoreChanged();
             }
-            FindObjectOfType<LevelLoader>().LoadGame();
+            savingWrapper.value.LoadGame();
         }
 
         public float GetNormalisedTime()
@@ -123,14 +162,35 @@ namespace MM.Core
             return timer.GetNormalisedTime();
         }
 
-        public object CaptureState()
+        public void LoadMainMenu()
         {
-            return highScore;
+            levelLoader.value.LoadMainMenu();
         }
 
-        public void RestoreState(object state)
+        public void NewGame()
         {
-            SetHighScore((int)state);
+            ResetGame();
+            levelLoader.value.NewGame();
+        }
+
+        public void QuitGame()
+        {
+            levelLoader.value.QuitGame();
+        }
+
+        public void SaveGame()
+        {
+            savingWrapper.value.SaveGame();
+        }
+
+        private LevelLoader GetLevelLoader()
+        {
+            return FindObjectOfType<LevelLoader>();
+        }
+
+        private SavingWrapper GetSavingWrapper()
+        {
+            return GetComponent<SavingWrapper>();
         }
     }
 }

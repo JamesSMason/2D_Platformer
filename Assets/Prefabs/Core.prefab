@@ -10,8 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 8241149524515632313}
   - component: {fileID: 5426617159486430384}
+  - component: {fileID: 5828559261671831931}
+  - component: {fileID: 6925272754130341708}
   m_Layer: 0
-  m_Name: Timer
+  m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,3 +46,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelTimeInSeconds: 180
+--- !u!114 &5828559261671831931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5325506130373891968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bc403b43e7adf142b1c14d518ac9bec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreForExtraLife: 20000
+  scorePerAirUnit: 10
+  delay: 0.01
+--- !u!114 &6925272754130341708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5325506130373891968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f89c2c9123018ac4f8e52845c3e161df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

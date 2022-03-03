@@ -1,4 +1,3 @@
-using MM.Saving;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -12,25 +11,6 @@ namespace MM.Core
         [SerializeField] int firstLevelIndex = 2;
         [SerializeField] int gameOverIndex = 1;
 
-        const string saveFile = "save";
-
-        SavingSystem savingSystem = null;
-
-        void Awake()
-        {
-            savingSystem = FindObjectOfType<SavingSystem>();
-        }
-
-        public void SaveGame()
-        {
-            savingSystem.Save(saveFile);
-        }
-
-        public void LoadGame()
-        {
-            savingSystem.Load(saveFile);
-        }
-
         public void LoadMainMenu()
         {
             SceneManager.LoadScene(0);
@@ -38,9 +18,6 @@ namespace MM.Core
 
         public void NewGame()
         {
-            GameState gameState = FindObjectOfType<GameState>();
-            gameState.ResetGame();
-            LoadGame();
             SceneManager.LoadScene(firstLevelIndex);
         }
 
@@ -72,7 +49,6 @@ namespace MM.Core
         private IEnumerator DelayLoad(int buildIndex, float delay)
         {
             yield return new WaitForSeconds(delay);
-            FindObjectOfType<GameState>().SetPlayGame(true);
             SceneManager.LoadScene(buildIndex);
         }
     }

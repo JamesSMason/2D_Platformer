@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 
 namespace MM.Core
@@ -7,54 +5,27 @@ namespace MM.Core
     public class Timer : MonoBehaviour
     {
         [SerializeField] float levelTimeInSeconds = 180.0f;
-        [SerializeField] int scorePerAirUnit = 10;
-        [SerializeField] float delay = 0.01f;
 
-        GameState gameState;
-
-        bool isGameLive = true;
         float currentTime = 0.0f;
 
-        void Awake()
+        public float GetCurrentTime()
         {
-            gameState = FindObjectOfType<GameState>();
+            return currentTime;
         }
 
-        void Update()
+        public float GetLevelTime()
         {
-            if (isGameLive)
-            {
-                currentTime += Time.deltaTime;
-                if (OnSliderChanged != null)
-                {
-                    OnSliderChanged();
-                }
-                if (currentTime > levelTimeInSeconds)
-                {
-                    gameState.LoseLife();
-                }
-            }
+            return levelTimeInSeconds;
+        }
+
+        public void UpdateTimer(float value)
+        {
+            currentTime += value;
         }
 
         public float GetNormalisedTime()
         {
             return 1 - (currentTime / levelTimeInSeconds);
-        }
-
-        public IEnumerator ConvertAirToScore()
-        {
-            isGameLive = false;
-            float timeRemaining = levelTimeInSeconds - currentTime;
-            for (float i = 0; i < timeRemaining; i++)
-            {
-                gameState.IncreaseScore(scorePerAirUnit);
-                currentTime++;
-                if (OnSliderChanged != null)
-                {
-                    OnSliderChanged();
-                }
-                yield return new WaitForSeconds(delay);
-            }
         }
     }
 }

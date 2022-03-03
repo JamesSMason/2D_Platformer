@@ -12,12 +12,11 @@ namespace MM.Player
 
         Vector2 moveInput;
         Rigidbody2D myRigidbody = null;
-        BoxCollider2D myBoxCollider = null;
+        CollisionDetector myCollider = null;
         GameState gameState = null;
 
         Animator animator = null;
 
-        bool isJumping = false;
         bool isOnBelt = false;
         bool firstTouch = false;
 
@@ -28,7 +27,7 @@ namespace MM.Player
         void Awake()
         {
             myRigidbody = GetComponent<Rigidbody2D>();
-            myBoxCollider = GetComponentInChildren<BoxCollider2D>();
+            myCollider = GetComponentInChildren<CollisionDetector>();
             gameState = FindObjectOfType<GameState>();
             animator = GetComponent<Animator>();
         }
@@ -43,6 +42,11 @@ namespace MM.Player
                 return;
             }
             myRigidbody.gravityScale = 1;
+            if (!myCollider.GetIsOnPlatform())
+            {
+                myRigidbody.velocity = new Vector2(0f, myRigidbody.velocity.y);
+                return;
+            }
             Run();
             if (myRigidbody.velocity.y == 0)
             {
@@ -79,30 +83,12 @@ namespace MM.Player
 
         void OnJump(InputValue value)
         {
-            if (isJumping) { return; }
-            bool touchingPlatform = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Platform"));
-            if (!touchingPlatform) { return; }
+            if (!myCollider.GetIsOnPlatform()) { return; }
 
             if (value.isPressed)
             {
-                SetIsJumping(true);
                 myRigidbody.velocity += new Vector2(0f, jumpVelocity);
             }
-        }
-
-        public bool GetIsJumping()
-        {
-            return isJumping;
-        }
-
-        public void SetIsJumping(bool isJumping)
-        {
-            this.isJumping = isJumping;
-        }
-
-        public void ResetSpeed()
-        {
-            myRigidbody.velocity = new Vector2(0f, myRigidbody.velocity.y);
         }
 
         public void SetOnConveyor(bool isOnBelt, Vector2 velocity)
@@ -114,8 +100,7 @@ namespace MM.Player
 
         private void Run()
         {
-            bool touchingPlatform = myBoxCollider.IsTouchingLayers(LayerMask.GetMask("Platform"));
-            if (!touchingPlatform) { return; }
+            if (!myCollider.GetIsOnPlatform()) { return; }
 
             if (isOnBelt)
             {
@@ -141,7 +126,7 @@ namespace MM.Player
                 myRigidbody.velocity = new Vector2(moveInput.x * velocity, myRigidbody.velocity.y);
             }
 
-            if (!isJumping && touchingPlatform)
+            if (myCollider.GetIsOnPlatform())
             {
                 Vector3 playerScale = transform.localScale;
                 if (Mathf.Abs(myRigidbody.velocity.x) > Mathf.Epsilon)

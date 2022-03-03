@@ -19,7 +19,7 @@ namespace MM.UI
             {
                 gameState.SetHighScore(gameState.GetScore());
                 GetComponent<TextMeshProUGUI>().text = $"You achieved a new High Score of {gameState.GetHighScore()}!";
-                FindObjectOfType<LevelLoader>().SaveGame();
+                gameState.SaveGame();
             }
         }
     }

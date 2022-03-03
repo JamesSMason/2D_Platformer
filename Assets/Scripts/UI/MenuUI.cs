@@ -5,31 +5,26 @@ namespace MM.UI
 {
     public class MenuUI : MonoBehaviour
     {
-        LazyValue<LevelLoader> levelLoader = null;
+        GameState gameState = null;
 
         void Awake()
         {
-            levelLoader = new LazyValue<LevelLoader>(GetLevelLoader);
+            gameState = FindObjectOfType<GameState>();
         }
 
         public void StartNewGame()
         {
-            levelLoader.value.NewGame();
+            gameState.NewGame();
         }
 
         public void QuitGame()
         {
-            levelLoader.value.QuitGame();
+            gameState.QuitGame();
         }
 
         public void LoadMainMenu()
         {
-            levelLoader.value.LoadMainMenu();
-        }
-
-        private LevelLoader GetLevelLoader()
-        {
-            return FindObjectOfType<LevelLoader>();
+            gameState.LoadMainMenu();
         }
     }
 }
