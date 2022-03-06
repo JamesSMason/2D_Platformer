@@ -35,5 +35,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/8 Miner Willy meets the Kong Beast.unity
     guid: c8d12e2105e236a46b0fb7b5a4cb47d4
+  - enabled: 1
+    path: Assets/Scenes/9 Wacky Amoebatrons.unity
+    guid: df84a9ecf68c36740a8ec39d2ba50c67
+  - enabled: 1
+    path: Assets/Scenes/10 The Endorian Forest.unity
+    guid: ec8a1e2be80e683459397b1bb4a467f1
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: f5b0e06487dfc7c459cc8f6768caf39e, type: 2}
