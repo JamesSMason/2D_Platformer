@@ -6,11 +6,14 @@ namespace MM.Enemies
     public class EnemyMover : MonoBehaviour
     {
         [SerializeField] float speed = 3.0f;
+        [SerializeField] float fallSpeed = -3.0f;
         [SerializeField] bool isHorizontal = true;
 
         GameState gameState = null;
         Rigidbody2D myRigidbody = null;
         Animator animator = null;
+
+        bool isFalling = false;
 
         void Awake()
         {
@@ -27,6 +30,8 @@ namespace MM.Enemies
                 animator.StartPlayback();
                 return;
             }
+
+            if (isFalling) { return; }
 
             if (isHorizontal)
             {
@@ -51,6 +56,13 @@ namespace MM.Enemies
             {
                 speed *= -1;
             }
+        }
+
+        public void SetIsFalling()
+        {
+            isFalling = true;
+            GetComponent<CapsuleCollider2D>().isTrigger = true;
+            myRigidbody.velocity = new Vector2(0f, fallSpeed);
         }
     }
 }

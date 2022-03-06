@@ -832,7 +832,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2933450751693894393, guid: f891b756760e4be43b770e0f1394df8d, type: 3}
       propertyPath: m_text
-      value: The Cold Room
+      value: The Menagerie
       objectReference: {fileID: 0}
     - target: {fileID: 2933450752918033594, guid: f891b756760e4be43b770e0f1394df8d, type: 3}
       propertyPath: m_Pivot.x

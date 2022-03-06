@@ -30,11 +30,12 @@ namespace MM.Player
             myCollider = GetComponentInChildren<CollisionDetector>();
             gameState = FindObjectOfType<GameState>();
             animator = GetComponent<Animator>();
+            myRigidbody.gravityScale = 1;
         }
 
         void Update()
         {
-            CheckGameState();
+            if (CheckGamePaused()) { return; }
 
             Run();
 
@@ -75,19 +76,16 @@ namespace MM.Player
             firstTouch = isOnBelt;
         }
 
-        private void CheckGameState()
+        private bool CheckGamePaused()
         {
             if (!gameState.GetPlayGame())
             {
                 myRigidbody.velocity = Vector2.zero;
                 myRigidbody.gravityScale = 0;
                 animator.StartPlayback();
-                return;
+                return true;
             }
-            else if (myRigidbody.gravityScale == 0)
-            {
-                myRigidbody.gravityScale = 1;
-            }
+            return false;
         }
 
         private void CheckForHardLanding()

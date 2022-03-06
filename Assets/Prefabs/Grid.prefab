@@ -232,28 +232,20 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 3314703702893536650}
     m_ColliderPaths:
-    - - X: -149999959
-        Y: 120000100
-      - X: -160000041
-        Y: 120000100
-      - X: -160000100
-        Y: 120000041
-      - X: -160000100
-        Y: 89999959
-      - X: -160000041
-        Y: 89999900
-      - X: -149999959
-        Y: 89999900
-      - X: -149999900
-        Y: 89999959
-      - X: -149999900
-        Y: 120000041
+    - - X: -150000000
+        Y: 90000000
+      - X: -150000000
+        Y: 120000000
+      - X: -160000000
+        Y: 120000000
+      - X: -160000000
+        Y: 90000000
   m_CompositePaths:
     m_Paths:
-    - - {x: -15.000026, y: 8.99999}
-      - {x: -15.000026, y: 12.00001}
-      - {x: -16.00001, y: 11.999974}
-      - {x: -15.999974, y: 8.99999}
+    - - {x: -15.000029, y: 9}
+      - {x: -15.000029, y: 12}
+      - {x: -16, y: 11.99997}
+      - {x: -15.999971, y: 9}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!1 &1898675975410757585
@@ -268,6 +260,7 @@ GameObject:
   - component: {fileID: 6865562228814008294}
   - component: {fileID: 791014626316977865}
   - component: {fileID: 6750106395444722639}
+  - component: {fileID: 7296649790244242846}
   m_Layer: 13
   m_Name: EnemyBlocker
   m_TagString: Untagged
@@ -391,6 +384,27 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
+--- !u!50 &7296649790244242846
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1898675975410757585}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &2416276954910905976
 GameObject:
   m_ObjectHideFlags: 0
@@ -1182,7 +1196,7 @@ Tilemap:
       e33: 1
   m_TileColorArray:
   - m_RefCount: 1
-    m_Data: {r: 0.8197947, g: 0.48999542, b: 0.51543295, a: 1}
+    m_Data: {r: 0.84442663, g: 0.5641447, b: 0.6375286, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2018,13 +2032,13 @@ Tilemap:
       e33: 1
   m_TileColorArray:
   - m_RefCount: 4
-    m_Data: {r: 0.7957789, g: 0.47561216, b: 0.5471411, a: 1}
+    m_Data: {r: 0.8361963, g: 0.38799497, b: 0.45231158, a: 1}
   - m_RefCount: 0
     m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
   - m_RefCount: 0
     m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
   - m_RefCount: 59
-    m_Data: {r: 0.96525204, g: 0.5018007, b: 0.5768143, a: 1}
+    m_Data: {r: 0.7781689, g: 0.36782584, b: 0.4186816, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2981,7 +2995,7 @@ Tilemap:
       e33: 1
   m_TileColorArray:
   - m_RefCount: 66
-    m_Data: {r: 0.786171, g: 0.37761056, b: 0.5009175, a: 1}
+    m_Data: {r: 0.9022494, g: 0.46846333, b: 0.5437031, a: 1}
   - m_RefCount: 0
     m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
   m_TileObjectToInstantiateArray: []

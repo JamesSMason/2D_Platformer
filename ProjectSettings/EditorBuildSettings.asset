@@ -26,5 +26,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/5 Eugene's Lair.unity
     guid: 6336d7097bda8654983ef29db1210dd5
+  - enabled: 1
+    path: Assets/Scenes/6 Processing Plant.unity
+    guid: 85e14563e6c328142af5a320afbd8fc2
+  - enabled: 1
+    path: Assets/Scenes/7 The Vat.unity
+    guid: 9f115ef4b1ad48645bdba642c3a1affc
+  - enabled: 1
+    path: Assets/Scenes/8 Miner Willy meets the Kong Beast.unity
+    guid: c8d12e2105e236a46b0fb7b5a4cb47d4
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: f5b0e06487dfc7c459cc8f6768caf39e, type: 2}
